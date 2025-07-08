@@ -9,5 +9,16 @@
     "stock": 25,
     "category": "Tecnología",
     "thumbnails": []
+  },
+  {
+    "id": 2,
+    "title": "Iphone 16 pro max",
+    "description": "Ultimo celular de Apple",
+    "code": "2",
+    "price": 1500000,
+    "status": true,
+    "stock": 3,
+    "category": "Tecno",
+    "thumbnails": []
   }
 ]
