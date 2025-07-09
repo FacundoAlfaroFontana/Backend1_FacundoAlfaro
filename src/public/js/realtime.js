@@ -1,14 +1,15 @@
-// Conexión al servidor via Socket.IO
+// Conexión en tiempo real al servidor usando Socket.IO
 const socket = io();
 
-// Referencias a elementos del DOM
+// Accedemos a elementos clave del DOM
 const productForm = document.getElementById('productForm');
 const productList = document.getElementById('productList');
 
-// Listener del formulario para AGREGAR producto
+// Evento del formulario para crear un nuevo producto
 productForm.addEventListener('submit', (e) => {
-  e.preventDefault();
+  e.preventDefault(); // Evita el refresh del navegador
 
+  // Armamos el nuevo producto desde los inputs del formulario
   const newProduct = {
     title: document.getElementById('title').value,
     description: document.getElementById('description').value,
@@ -18,26 +19,30 @@ productForm.addEventListener('submit', (e) => {
     category: document.getElementById('category').value
   };
 
-  socket.emit('newProduct', newProduct);
-
-  productForm.reset();
+  socket.emit('newProduct', newProduct); // Enviamos el producto al servidor
+  productForm.reset(); // Limpiamos el formulario
 });
 
-// Escucha la lista actualizada desde el servidor
+// Escuchamos actualizaciones del listado desde el servidor
 socket.on('updateProducts', (products) => {
-  productList.innerHTML = '';
+  productList.innerHTML = ''; // Reiniciamos la lista antes de renderizar
+
   products.forEach(p => {
     const li = document.createElement('li');
+
+    // Mostramos el producto con un botón para eliminarlo
     li.innerHTML = `
       <strong>${p.title}</strong> - $${p.price} <br/>
       ${p.description}
       <button onclick="deleteProduct(${p.id})">Eliminar</button>
     `;
+
     productList.appendChild(li);
   });
 });
 
-// Función global para ELIMINAR producto
+// Función para emitir la eliminación de un producto por su ID
 function deleteProduct(id) {
   socket.emit('deleteProduct', id);
 }
+
