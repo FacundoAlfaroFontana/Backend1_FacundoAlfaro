@@ -19,30 +19,30 @@ productForm.addEventListener('submit', (e) => {
     category: document.getElementById('category').value
   };
 
-  socket.emit('newProduct', newProduct); // Enviamos el producto al servidor
+  // Enviamos el producto al servidor
+  socket.emit('newProduct', newProduct);
   productForm.reset(); // Limpiamos el formulario
 });
 
 // Escuchamos actualizaciones del listado desde el servidor
 socket.on('updateProducts', (products) => {
-  productList.innerHTML = ''; // Reiniciamos la lista antes de renderizar
+  productList.innerHTML = ''; // Limpiamos lista antes de renderizar
 
   products.forEach(p => {
     const li = document.createElement('li');
 
-    // Mostramos el producto con un botón para eliminarlo
+    // ✅ Usamos _id porque Mongo genera _id, no id
     li.innerHTML = `
       <strong>${p.title}</strong> - $${p.price} <br/>
       ${p.description}
-      <button onclick="deleteProduct(${p.id})">Eliminar</button>
+      <button onclick="deleteProduct('${p._id}')">Eliminar</button>
     `;
 
     productList.appendChild(li);
   });
 });
 
-// Función para emitir la eliminación de un producto por su ID
+// Función para emitir la eliminación de un producto por su ID de Mongo
 function deleteProduct(id) {
   socket.emit('deleteProduct', id);
 }
-

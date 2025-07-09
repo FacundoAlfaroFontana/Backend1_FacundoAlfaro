@@ -5,11 +5,11 @@
     <li>
       <strong>{{title}}</strong> - ${{price}} <br />
       {{description}}
-      <button onclick="deleteProduct({{id}})">Eliminar</button>
+      <!-- ✅ Usamos _id de Mongo y lo pasamos como string -->
+      <button onclick="deleteProduct('{{_id}}')">Eliminar</button>
     </li>
   {{/each}}
 </ul>
-
 
 <h2>Agregar Producto</h2>
 <form id="productForm">
